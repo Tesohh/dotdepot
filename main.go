@@ -17,4 +17,5 @@ func main() {
 	}
 
 	store := db.MongoStore{Client: client, Coll: client.Database("main").Collection("files")}
+	_ = store
 }
