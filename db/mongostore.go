@@ -2,12 +2,19 @@ package db
 
 import (
 	"context"
+	"errors"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-type MongoStore[T any] struct {
+var ErrDocumentNotFound = errors.New("couldn't find document")
+
+type IsEmptyer interface {
+	IsEmpty() bool
+}
+
+type MongoStore[T IsEmptyer] struct {
 	Client *mongo.Client
 	Coll   *mongo.Collection
 }
@@ -16,7 +23,9 @@ func (m MongoStore[T]) Get(q Query) (*T, error) {
 	res := m.Coll.FindOne(context.Background(), q.ToMongo())
 	var document T
 	res.Decode(&document)
-	// TODO: if document is empty return an error
+	if document.IsEmpty() {
+		return nil, ErrDocumentNotFound
+	}
 	return &document, nil
 }
 

@@ -7,3 +7,7 @@ type User struct {
 	Username          string             `bson:"username,omitempty"`
 	PasswordEncrypted string             `bson:"password,omitempty"`
 }
+
+func (u User) IsEmpty() bool {
+	return (u == User{})
+}

@@ -12,8 +12,8 @@ var ErrWrongPW = errors.New("password invalid")
 
 // If you want to give write access, you need to Verify first
 func Verify(store db.Storer[User], creds Credentials) error {
-	user, _ := store.Get(db.Query{"username": creds.Username}) // TODO: err != nil when user doesn't exist
-	if (*user == User{}) {                                     // this means the user doesn't exist: we need to create it.
+	user, err := store.Get(db.Query{"username": creds.Username})
+	if err != nil { // this means the user doesn't exist: we need to create it.
 		if creds.Password == "" {
 			return ErrTryingToSignupWithNoPW
 		}
