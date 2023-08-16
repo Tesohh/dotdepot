@@ -15,3 +15,7 @@ type Dotfile struct {
 	Content  string             `bson:"content,omitempty"`
 	Paths    Paths              `bson:"paths,omitempty"`
 }
+
+func (df Dotfile) IsEmpty() bool {
+	return df == Dotfile{}
+}
