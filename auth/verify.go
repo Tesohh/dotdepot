@@ -39,10 +39,7 @@ func VerifyWrite(store db.Storer[User], creds Credentials) error {
 }
 
 // This needs to be run BEFORE Verify, to check if the login file exists and all that
-func VerifyReadOnly(store db.Storer[User], creds Credentials, crederr error) error {
-	if crederr != nil {
-		return ErrNoLoginFile
-	}
+func VerifyReadOnly(store db.Storer[User], creds Credentials) error {
 	if creds.Username == "" {
 		return ErrNoUsernameInLoginFile
 	}

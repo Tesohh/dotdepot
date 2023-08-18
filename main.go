@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/Tesohh/dotdepot/cli/auth"
@@ -15,10 +16,10 @@ import (
 func main() {
 	client, err := db.NewMongoClient()
 	if err != nil { // the universe collapses if we dont have the client
-		panic(err)
+		log.Fatal(err)
 	}
 	if err := client.Ping(context.Background(), nil); err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 	dfStore := db.MongoStore[db.Dotfile]{Client: client, Coll: client.Database("main").Collection("files")}
@@ -26,7 +27,11 @@ func main() {
 
 	cfg, err := config.Read[config.Config]("config.yml")
 	if err != nil {
-		panic(err)
+		log.Fatal(config.ErrNoConfigFile)
+	}
+	creds, err := config.Read[auth.Credentials]("login.yml")
+	if err != nil {
+		log.Fatal(auth.ErrNoLoginFile)
 	}
 
 	if len(os.Args) < 2 {
@@ -38,11 +43,11 @@ func main() {
 	}
 	switch os.Args[1] {
 	case "push":
-		err = cmd.Push(userStore, dfStore, *cfg)
+		err = cmd.Push(userStore, dfStore, *cfg, *creds)
 	case "pull":
 		err = cmd.Pull(userStore, dfStore, *cfg)
 	}
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 }
