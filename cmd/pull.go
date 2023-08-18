@@ -20,12 +20,13 @@ func Pull(userStore db.Storer[auth.User], dfStore db.Storer[db.Dotfile], creds a
 
 	// first of all we need the new config:
 	cfgpath := "~/.config/dotdepot/config.yml"
+	cfgpaths := db.Paths{
+		Windows: cfgpath,
+		MacOS:   cfgpath,
+		Linux:   cfgpath,
+	}
 	query := db.Query{
-		"paths": db.Paths{
-			Windows: cfgpath,
-			MacOS:   cfgpath,
-			Linux:   cfgpath,
-		}.ToQuery(),
+		"paths":    cfgpaths.ToQuery(),
 		"username": creds.Username,
 	}
 	rawCfg, err := dfStore.Get(query)
@@ -35,8 +36,11 @@ func Pull(userStore db.Storer[auth.User], dfStore db.Storer[db.Dotfile], creds a
 	var cfg config.Config
 	yaml.Unmarshal([]byte(rawCfg.Content), &cfg)
 
+	files := cfg.Files
+	files = append(files, cfgpaths)
+
 	filesIgnored := 0
-	for _, paths := range cfg.Files {
+	for _, paths := range files {
 		query := db.Query{"paths": paths.ToQuery(), "username": creds.Username}
 		df, err := dfStore.Get(query)
 		if err != nil {
