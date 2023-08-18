@@ -24,6 +24,7 @@ password: <yourPassword> # if you want to just pull, you don't need the password
 
 ## Configuration
 > Note: if you want to just pull, you can leave `config.yml` empty.
+> Note: you only need to write this on one machine. It is synced automatically with every push and pull.
 
 Here's an example config.yml:
 ```yml

@@ -23,7 +23,16 @@ func Push(userStore db.Storer[auth.User], dfStore db.Storer[db.Dotfile], cfg con
 
 	filesIgnored := 0
 
-	for _, paths := range cfg.Files {
+	// make sure the config gets pushed too
+	files := cfg.Files
+	cfgpath := "~/.config/dotdepot/config.yml"
+	files = append(files, db.Paths{
+		Windows: cfgpath,
+		MacOS:   cfgpath,
+		Linux:   cfgpath,
+	})
+
+	for _, paths := range files {
 		path, err := paths.ForCurrentOS()
 		if err != nil {
 			return err
@@ -48,6 +57,7 @@ func Push(userStore db.Storer[auth.User], dfStore db.Storer[db.Dotfile], cfg con
 			Paths:    paths,
 		}
 
+		// upsert
 		query := db.Query{"paths": paths.ToQuery(), "username": creds.Username}
 		_, err = dfStore.Get(query)
 		if err != nil { // this means we must create the document
@@ -59,7 +69,7 @@ func Push(userStore db.Storer[auth.User], dfStore db.Storer[db.Dotfile], cfg con
 		fmt.Printf("✅ pushed %v\n", path)
 	}
 	if filesIgnored > 0 {
-		fmt.Printf("🤷 Ignored %v files", filesIgnored)
+		fmt.Printf("🤷 ignored %v files", filesIgnored)
 	}
 	return nil
 }

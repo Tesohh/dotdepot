@@ -46,7 +46,7 @@ func main() {
 	case "push":
 		err = cmd.Push(userStore, dfStore, *cfg, *creds)
 	case "pull":
-		err = cmd.Pull(userStore, dfStore, *cfg)
+		err = cmd.Pull(userStore, dfStore, *cfg, *creds)
 	}
 	if err != nil {
 		log.Fatal(err)
