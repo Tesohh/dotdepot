@@ -26,6 +26,14 @@
       "mode": "auto",
       "program": ".",
       "args": ["pull"]
+    },
+    {
+      "name": "Signup command",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": ".",
+      "args": ["signup"]
     }
   ]
 }

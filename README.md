@@ -19,8 +19,8 @@ Plus, as a bonus, you can configure dotdepot to run a installation script after 
 username: <yourUsername>
 password: <yourPassword> # if you want to just pull, you don't need the password
 ```
-
-4. Fill out config.yml (see [configuration](#configuration))
+4. run `dotdepot signup`
+5. Fill out config.yml (see [configuration](#configuration))
 
 ## Configuration
 > Note: if you want to just pull, you can leave `config.yml` empty.

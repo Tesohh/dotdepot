@@ -47,6 +47,8 @@ func main() {
 		err = cmd.Push(userStore, dfStore, *cfg, *creds)
 	case "pull":
 		err = cmd.Pull(userStore, dfStore, *creds)
+	case "signup":
+		err = cmd.Signup(userStore, *creds)
 	}
 	if err != nil {
 		log.Fatal(err)

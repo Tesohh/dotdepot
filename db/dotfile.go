@@ -54,11 +54,12 @@ func (p Paths) ForCurrentOS() (string, error) {
 }
 
 type Dotfile struct {
-	ID       primitive.ObjectID `bson:"_id,omitempty"`
-	FileName string             `bson:"filename,omitempty"`
-	UserName string             `bson:"username,omitempty"`
-	Content  string             `bson:"content,omitempty"`
-	Paths    Paths              `bson:"paths,omitempty"`
+	ID          primitive.ObjectID `bson:"_id,omitempty"`
+	FileName    string             `bson:"filename,omitempty"`
+	UserName    string             `bson:"username,omitempty"`
+	Content     string             `bson:"content,omitempty"`
+	Paths       Paths              `bson:"paths,omitempty"`
+	IsDirectory bool               `bson:"isdir,omitempty"`
 }
 
 func (df Dotfile) IsEmpty() bool {

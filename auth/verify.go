@@ -11,6 +11,7 @@ var ErrTryingToSignupWithNoPW = errors.New("since you're signing up, you need to
 var ErrWrongPW = errors.New("password invalid")
 var ErrNoLoginFile = errors.New("no login file found: please create a login.yml in the dotdepot folder (~/.config/dotdepot)")
 var ErrNoUsernameInLoginFile = errors.New("no username in login file: please specify at least a username in your login.yml to get read access")
+var ErrUserDoesntExist = errors.New("user doesn't exist")
 
 // If you want to give write access, you need to VerifyWrite first
 func VerifyWrite(store db.Storer[User], creds Credentials) error {
@@ -44,7 +45,7 @@ func VerifyReadOnly(store db.Storer[User], creds Credentials) error {
 		return ErrNoUsernameInLoginFile
 	}
 	if _, err := store.Get(db.Query{"username": creds.Username}); err != nil {
-		return err
+		return ErrUserDoesntExist
 	}
 	return nil
 }
