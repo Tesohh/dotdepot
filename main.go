@@ -34,8 +34,8 @@ func main() {
 		log.Fatal(auth.ErrNoLoginFile)
 	}
 
+	fmt.Println("📦 dotdepot")
 	if len(os.Args) < 2 {
-		fmt.Println("📦 dotdepot")
 		fmt.Println("Usage:")
 		fmt.Println("	- dotdepot push")
 		fmt.Println("	- dotdepot pull")
