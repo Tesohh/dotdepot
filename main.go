@@ -10,6 +10,7 @@ import (
 	"github.com/Tesohh/dotdepot/cli/cmd"
 	"github.com/Tesohh/dotdepot/cli/config"
 	"github.com/Tesohh/dotdepot/cli/db"
+	"github.com/fatih/color"
 	_ "github.com/joho/godotenv/autoload"
 )
 
@@ -34,7 +35,7 @@ func main() {
 		log.Fatal(auth.ErrNoLoginFile)
 	}
 
-	fmt.Println("📦 dotdepot")
+	color.New(color.Bold).Println("📦 dotdepot")
 	if len(os.Args) < 2 {
 		fmt.Println("Usage:")
 		fmt.Println("	- dotdepot push")
