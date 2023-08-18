@@ -23,7 +23,7 @@ password: <yourPassword> # if you want to just pull, you don't need the password
 4. Fill out config.yml (see [configuration](#configuration))
 
 ## Configuration
-> NOTE: if you want to just pull, you can leave `config.yml` empty.
+> Note: if you want to just pull, you can leave `config.yml` empty.
 
 Here's an example config.yml:
 ```yml
