@@ -42,3 +42,7 @@ files:
 
 ## Notes
 I am NOT responsible for any files uploaded/downloaded/run through the service
+
+## Feature wishlist
+- [ ] Sync entire directories instead of just files
+- [ ] Add option to run a pre-push and post-pull script (with previous confirmation)
