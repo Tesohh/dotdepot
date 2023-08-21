@@ -9,5 +9,6 @@ import (
 var ErrNoConfigFile = errors.New("no config file found: please create a config.yml in the dotdepot folder (~/.config/dotdepot)")
 
 type Config struct {
-	Files []db.Paths `yaml:"files"`
+	Files       []db.Paths `yaml:"files"`
+	Directories []db.Paths `yaml:"directories"`
 }

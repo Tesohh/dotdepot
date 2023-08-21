@@ -3,10 +3,12 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"path"
 
 	"github.com/Tesohh/dotdepot/cli/auth"
 	"github.com/Tesohh/dotdepot/cli/config"
 	"github.com/Tesohh/dotdepot/cli/db"
+	"github.com/Tesohh/dotdepot/cli/walk"
 	"github.com/fatih/color"
 )
 
@@ -31,6 +33,29 @@ func Push(userStore db.Storer[auth.User], dfStore db.Storer[db.Dotfile], cfg con
 		MacOS:   cfgpath,
 		Linux:   cfgpath,
 	})
+	for _, dir := range cfg.Directories {
+		ospath, err := dir.ForCurrentOS()
+		if err != nil {
+			return err
+		}
+		paths, err := walk.Walk(ospath, true)
+		if err != nil {
+			return err
+		}
+		for _, v := range paths {
+			p := db.Paths{}
+			if dir.Linux != "" {
+				p.Linux = path.Join(dir.Linux, v)
+			}
+			if dir.MacOS != "" {
+				p.MacOS = path.Join(dir.MacOS, v)
+			}
+			if dir.Windows != "" {
+				p.Windows = path.Join(dir.Windows, v)
+			}
+			files = append(files, p)
+		}
+	}
 
 	for _, paths := range files {
 		path, err := paths.ForCurrentOS()

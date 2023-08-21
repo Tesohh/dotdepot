@@ -8,14 +8,12 @@
       "name": "Launch Package",
       "type": "go",
       "request": "launch",
-      "mode": "auto",
-      "program": ".",
+      "program": "."
     },
     {
       "name": "Push command",
       "type": "go",
       "request": "launch",
-      "mode": "auto",
       "program": ".",
       "args": ["push"]
     },
@@ -23,7 +21,6 @@
       "name": "Pull command",
       "type": "go",
       "request": "launch",
-      "mode": "auto",
       "program": ".",
       "args": ["pull"]
     },
@@ -31,7 +28,6 @@
       "name": "Signup command",
       "type": "go",
       "request": "launch",
-      "mode": "auto",
       "program": ".",
       "args": ["signup"]
     }
