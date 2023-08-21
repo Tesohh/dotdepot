@@ -23,10 +23,25 @@ func (m MongoStore[T]) Get(q Query) (*T, error) {
 	res := m.Coll.FindOne(context.Background(), q.ToMongo())
 	var document T
 	res.Decode(&document)
+
 	if document.IsEmpty() {
 		return nil, ErrDocumentNotFound
 	}
 	return &document, nil
+}
+
+func (m MongoStore[T]) GetMany(q Query) ([]T, error) {
+	cur, err := m.Coll.Find(context.Background(), q.ToMongo())
+	if err != nil {
+		return nil, err
+	}
+
+	var results []T
+	if err = cur.All(context.TODO(), &results); err != nil {
+		return nil, err
+	}
+
+	return results, nil
 }
 
 func (m MongoStore[T]) Put(doc T) error {

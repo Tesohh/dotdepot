@@ -14,6 +14,7 @@ func (q Query) ToMongo() primitive.D {
 
 type Storer[T any] interface {
 	Get(Query) (*T, error)
+	GetMany(Query) ([]T, error)
 	Put(T) error
 	Update(Query, T) error
 	Delete(Query) error
