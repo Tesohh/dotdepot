@@ -1,3 +1,5 @@
 .env
 testfile.txt
 testdirectory/**
+
+**/node_modules
