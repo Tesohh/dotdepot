@@ -32,6 +32,9 @@ func getFilesFromDirs(dfStore db.Storer[db.Dotfile], cfg config.Config, creds au
 			if err != nil {
 				return nil, err
 			}
+			if rp == "" || dp == "" || rp == "." || dp == "." {
+				continue
+			}
 			if strings.Contains(rp, dp) {
 				dfs = append(dfs, r.Paths)
 			}
@@ -63,7 +66,10 @@ func Pull(userStore db.Storer[auth.User], dfStore db.Storer[db.Dotfile], creds a
 		return err
 	}
 	var cfg config.Config
-	yaml.Unmarshal([]byte(rawCfg.Content), &cfg)
+	err = yaml.Unmarshal([]byte(rawCfg.Content), &cfg)
+	if err != nil {
+		return err
+	}
 
 	files := cfg.Files
 	files = append(files, cfgpaths)
@@ -87,23 +93,23 @@ func Pull(userStore db.Storer[auth.User], dfStore db.Storer[db.Dotfile], creds a
 			return err
 		}
 
-		if p == "" {
+		if p == "" || p == "." {
 			filesIgnored += 1
 			continue
 		}
 		if _, err = os.Stat(p); os.IsNotExist(err) {
-			// TEMPORARY SOLUTION, Works only on UNIX
 			var dir string
 			if runtime.GOOS != "windows" {
 				dirsplit := strings.Split(p, "/")
 				dir = path.Join("/", path.Join(dirsplit[:len(dirsplit)-1]...))
 			} else {
-				dirsplit := strings.Split(p, "\\")
+				dirwindowsedition := strings.ReplaceAll(p, "/", "\\")
+				dirsplit := strings.Split(dirwindowsedition, "\\")
 				dir = path.Join(dirsplit[:len(dirsplit)-1]...)
 			}
 			mkerr := os.MkdirAll(dir, 0700)
 			if mkerr != nil {
-				return nil
+				return err
 			}
 		}
 
