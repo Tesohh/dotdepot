@@ -30,15 +30,20 @@ Here's an example config.yml:
 ```yml
 files:
     - macos: ~/.vimrc
-    linux: ~/.vimrc
-    # windows is ignored because i didn't specify it
+      linux: ~/.vimrc
+      # windows is ignored because i didn't specify it
     
     - macos: ~/Library/Application Support/Code/User/settings.json
-    linux: ~/.config/Code/settings.json
-    windows: "%APPDATA%/Code/User/settings.json"
-    # if it has special characters like %, wrap in quotes
-    # also notice how i didn't use backslash. 
+      linux: ~/.config/Code/settings.json
+      windows: "%APPDATA%/Code/User/settings.json"
+      # if it has special characters like %, wrap in quotes
+      # also notice how i didn't use backslash. 
+
+directories: # directories are read/written to recursively
+    - macos: ~/.config/nvim/
+      windows: ~/.config/nvim/
 ```
+Please note that indentation is important (make sure to follow yaml rules)
 
 ## Notes
 I am NOT responsible for any files uploaded/downloaded/run through the service
