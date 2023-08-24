@@ -27,6 +27,11 @@
 	onMount(() => {
 		const q = new URLSearchParams(window.location.search)
 		currentos = (q.get("os") || "").toLowerCase() as OS
+		if (currentos == ("" as OS)) {
+			if (navigator.userAgent.includes("Mac")) currentos = "macos"
+			else if (navigator.userAgent.includes("Windows")) currentos = "windows"
+			else if (navigator.userAgent.includes("Linux")) currentos = "linux"
+		}
 	})
 </script>
 
