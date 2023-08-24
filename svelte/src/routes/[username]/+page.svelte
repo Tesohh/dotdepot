@@ -36,7 +36,7 @@
 	})
 </script>
 
-<Navbar>
+<Navbar depotname={data.depotname}>
 	<OSSelector {currentos} slot="right-items" />
 </Navbar>
 
@@ -44,6 +44,4 @@
 	{#each data.docs as doc}
 		{getFilename(doc)}<br />
 	{/each}
-{:else}
-	Select an OS first to see files
 {/if}

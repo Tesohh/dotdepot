@@ -9,5 +9,5 @@ export const load: PageServerLoad = async ({ params }) => {
 	if (docs == null) {
 		throw error(404)
 	}
-	return { docs }
+	return { docs, depotname: params.username }
 }
