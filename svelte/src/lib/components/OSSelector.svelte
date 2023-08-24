@@ -5,7 +5,7 @@
 </script>
 
 <div
-	class="ml-10 flex flex-row max-w-fit
+	class="flex flex-row max-w-fit
     rounded-xl border-gray-300 border
     [&>*:not(:first-child)]:border-l [&>*:first-child]:rounded-l-xl [&>*:last-child]:rounded-r-xl"
 >

@@ -4,6 +4,7 @@
 	import type { PageServerData } from "./$types"
 	import OSSelector from "$lib/components/OSSelector.svelte"
 	import { onMount } from "svelte"
+	import Navbar from "$lib/components/Navbar.svelte"
 
 	function getFilename(df: Dotfile) {
 		const fn = (path: string) => path.split("/").at(-1) as string
@@ -35,8 +36,14 @@
 	})
 </script>
 
-<OSSelector {currentos} />
+<Navbar>
+	<OSSelector {currentos} slot="right-items" />
+</Navbar>
 
-{#each data.docs as doc}
-	{getFilename(doc)}<br />
-{/each}
+{#if currentos}
+	{#each data.docs as doc}
+		{getFilename(doc)}<br />
+	{/each}
+{:else}
+	Select an OS first to see files
+{/if}

@@ -13,7 +13,10 @@
 	}
 </script>
 
-<button class="w-28 h-20 text-3xl {selected ? os2color[os] : ''}" on:click={select}>
+<button
+	class="w-12 h-8 md:w-16 md:h-10 text-lg md:text-xl {selected ? os2color[os] : ''}"
+	on:click={select}
+>
 	{#if os == "windows"}
 		<i class="fa-brands fa-windows fa-fw" />
 	{:else if os == "macos"}
