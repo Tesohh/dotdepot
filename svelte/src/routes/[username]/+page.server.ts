@@ -3,11 +3,18 @@ import { error } from "@sveltejs/kit"
 import type { PageServerLoad } from "./$types"
 
 export const load: PageServerLoad = async ({ params }) => {
-	const docs = await dfColl
-		.find({ username: params.username }, { projection: { _id: 0 } })
-		.toArray()
+	let docs = await dfColl.find({ username: params.username }).toArray()
 	if (docs == null) {
 		throw error(404)
 	}
-	return { docs, depotname: params.username }
+	let dfs: Dotfile[] = []
+	for (let i = 0; i < docs.length; i++) {
+		dfs.push(docs[i])
+		dfs[i].safeID = docs[i]._id.toString()
+
+		// @ts-expect-error 2339
+		delete dfs[i]._id
+	}
+	console.log(dfs)
+	return { docs: dfs, depotname: params.username }
 }

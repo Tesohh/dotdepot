@@ -2,12 +2,13 @@ import { env } from "$env/dynamic/private"
 import { MongoClient } from "mongodb"
 
 export interface Paths {
-	macos: string
-	windows: string
-	linux: string
+	macos?: string
+	windows?: string
+	linux?: string
 }
 
 export interface Dotfile {
+	safeID: string
 	filename?: string
 	username: string
 	content: string

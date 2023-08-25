@@ -5,24 +5,13 @@
 	import OSSelector from "$lib/components/OSSelector.svelte"
 	import { onMount } from "svelte"
 	import Navbar from "$lib/components/Navbar.svelte"
-
-	function getFilename(df: Dotfile) {
-		const fn = (path: string) => path.split("/").at(-1) as string
-		let fileNames: string[] = []
-		if (df.paths.linux) fileNames.push(fn(df.paths.linux))
-		if (df.paths.windows) fileNames.push(fn(df.paths.windows))
-		if (df.paths.macos) fileNames.push(fn(df.paths.macos))
-
-		let counts: { [key: string]: number } = {}
-		for (let i of fileNames) {
-			if (!counts[i]) counts[i] = 0
-			counts[i]++
-		}
-		let max = Math.max(...Object.values(counts))
-		return Object.keys(counts).filter((key) => counts[key] == max)
-	}
+	import { treeifyPaths, type PathTree, type PathContexts } from "treeify-paths"
+	import type { WithId } from "mongodb"
+	import FileTree from "$lib/components/FileTree.svelte"
 
 	export let data: PageServerData
+
+	let tree: PathTree<WithId<Dotfile>>
 
 	let currentos: OS
 	onMount(() => {
@@ -33,6 +22,12 @@
 			else if (navigator.userAgent.includes("Windows")) currentos = "windows"
 			else if (navigator.userAgent.includes("Linux")) currentos = "linux"
 		}
+		if (currentos != ("" as OS) && currentos != undefined) {
+			let paths = data.docs.map((v) => [v.paths[currentos], v])
+			console.log(paths)
+			tree = treeifyPaths(paths as PathContexts)
+			console.log(tree)
+		}
 	})
 </script>
 
@@ -41,7 +36,7 @@
 </Navbar>
 
 {#if currentos}
-	{#each data.docs as doc}
-		{getFilename(doc)}<br />
-	{/each}
+	<div class="flex flex-col items-center">
+		<FileTree {tree} />
+	</div>
 {/if}
