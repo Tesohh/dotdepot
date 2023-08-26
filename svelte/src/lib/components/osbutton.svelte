@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { OS } from "$lib/ostype"
 
-	const os2color = { windows: "blue-500", macos: "gray-500", linux: "yellow-500" }
+	const os2color = { windows: "bg-blue-500", macos: "bg-gray-500", linux: "bg-yellow-500" }
 	export let os: OS
 	export let selected: boolean
 
@@ -13,7 +13,7 @@
 </script>
 
 <button
-	class="w-12 h-8 md:w-16 md:h-10 text-lg md:text-xl bg-{selected ? os2color[os] : ''}"
+	class="w-12 h-8 md:w-16 md:h-10 text-lg md:text-xl {selected ? os2color[os] : ''}"
 	on:click={select}
 >
 	{#if os == "windows"}

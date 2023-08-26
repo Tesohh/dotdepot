@@ -1,11 +1,11 @@
 <script lang="ts">
 	let data: any // oops
-	import Highlight, { HighlightAuto } from "svelte-highlight"
-	import go from "svelte-highlight/languages/go"
+	import { HighlightAuto } from "svelte-highlight"
 	import "svelte-highlight/styles/ros-pine.css"
+	export let markdownbackticks = true
 	$: code = data?.innerText
 	$: (() => {
-		if (code) {
+		if (code && markdownbackticks) {
 			code = code.replaceAll("```", "")
 			let codeSegments = code.split("\n")
 			codeSegments.shift()
@@ -14,7 +14,6 @@
 			code.trim()
 		}
 	})()
-	// console.log(code.split(" ")[0].replace("```", ""))
 </script>
 
 <span bind:this={data} class="hidden"><slot /></span>

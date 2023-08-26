@@ -1,5 +1,5 @@
 import { env } from "$env/dynamic/private"
-import { MongoClient } from "mongodb"
+import { MongoClient, type WithId } from "mongodb"
 
 export interface Paths {
 	macos?: string

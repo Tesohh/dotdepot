@@ -9,6 +9,7 @@
 	import FileTree from "$lib/components/FileTree.svelte"
 	import SvelteMarkdown from "svelte-markdown"
 	import renderers from "$lib/mdrenderers"
+	import { getOS } from "$lib/getos"
 
 	function getReadme(p: Dotfile[]) {
 		return p.find((v) => v.paths[currentos] == "~/.config/dotdepot/readme.md")
@@ -20,20 +21,13 @@
 	let readme: Dotfile | undefined
 	let currentos: OS
 	onMount(() => {
-		const q = new URLSearchParams(window.location.search)
-		currentos = (q.get("os") || "").toLowerCase() as OS
-		if (currentos == ("" as OS)) {
-			if (navigator.userAgent.includes("Mac")) currentos = "macos"
-			else if (navigator.userAgent.includes("Windows")) currentos = "windows"
-			else if (navigator.userAgent.includes("Linux")) currentos = "linux"
-		}
+		currentos = getOS()
 		if (currentos != ("" as OS) && currentos != undefined) {
 			let paths = data.docs.map((v) => [v.paths[currentos], v])
 			tree = treeifyPaths(paths as PathContexts)
 
 			readme = getReadme(data.docs)
 		}
-		console.log(renderers)
 	})
 </script>
 
@@ -43,19 +37,19 @@
 
 {#if currentos}
 	<div class="flex flex-col items-center">
-		<div class="ml-[-4rem]">
-			<FileTree {tree} />
+		<div class="">
+			<FileTree {tree} depotname={data.depotname} />
 		</div>
 
-		<div class=" mt-10 w-80 border p-4 rounded-md">
-			{#if readme}
+		{#if readme}
+			<div class=" mt-10 w-80 border p-4 rounded-md">
 				readme.md
 				<hr />
 				<div class="mkd">
 					<SvelteMarkdown source={readme.content} {renderers} />
 				</div>
-			{/if}
-		</div>
+			</div>
+		{/if}
 	</div>
 {/if}
 

@@ -5,6 +5,7 @@
 	import type { PathTree } from "treeify-paths"
 
 	export let tree: PathTree<Dotfile>
+	export let depotname: string
 </script>
 
 {#if tree}
@@ -15,11 +16,13 @@
 					{#if child.name == ""}
 						📁 {child.path.split("/").at(-1)}
 					{:else}
-						<a class="hover:text-blue-300" href={child.ctx.safeID ?? ""}>📄 {child.name}</a>
+						<a class="hover:text-blue-300" href="/{depotname}/{child.ctx.safeID ?? ''}"
+							>📄 {child.name}</a
+						>
 					{/if}
 					<br />
 					{#if child.name == ""}
-						<svelte:self tree={child} />
+						<svelte:self tree={child} {depotname} />
 					{/if}
 				{/if}
 			</li>

@@ -2,6 +2,7 @@
 	import type { OS } from "$lib/ostype"
 	import Osbutton from "./osbutton.svelte"
 	export let currentos: OS
+	console.log(currentos)
 </script>
 
 <div
