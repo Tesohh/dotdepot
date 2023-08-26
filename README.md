@@ -66,5 +66,4 @@ I am NOT responsible for any files uploaded/downloaded/run through the service
 
 ## Feature wishlist
 
-- [ ] Sync entire directories instead of just files
-- [ ] Add option to run a pre-push and post-pull script (with previous confirmation)
+- [ ] add a middle ground layer API, that makes it so that you can safely use the cli without hsaving to use mongo_pw
