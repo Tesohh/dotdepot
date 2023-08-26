@@ -21,7 +21,7 @@
 	<div class="mt-5 w-80 border p-4 rounded-md">
 		{data.df?.paths[currentos]?.split("/").at(-1) ?? "unknown"}
 		<hr class="mb-2" />
-		<CodeBlock markdownbackticks={false}>{data.df?.content}asdasd</CodeBlock>
+		<CodeBlock markdownbackticks={false}>{data.df?.content}</CodeBlock>
 	</div>
 </div>
 
