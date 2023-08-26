@@ -12,8 +12,7 @@ So if you want to share your config, or add it to your link tree or something si
 ## Can't i just use git?
 
 Yes, you can, but it only works well if you have all machines running the same os.
-For example, VSCode saves it's config in a different folder for each OS.
-Plus, as a bonus, you can configure dotdepot to run a installation script after pulling all your files.
+For example, VSCode saves it's config in a different folder for each OS, so you can see how it could become a problem quickly.
 
 ## Installing
 
