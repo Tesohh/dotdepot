@@ -6,13 +6,17 @@
 	import { onMount } from "svelte"
 	import Navbar from "$lib/components/Navbar.svelte"
 	import { treeifyPaths, type PathTree, type PathContexts } from "treeify-paths"
-	import type { WithId } from "mongodb"
 	import FileTree from "$lib/components/FileTree.svelte"
+	import SvelteMarkdown from "svelte-markdown"
+
+	function getReadme(p: Dotfile[]) {
+		return p.find((v) => v.paths[currentos] == "~/.config/dotdepot/readme.md")
+	}
 
 	export let data: PageServerData
 
-	let tree: PathTree<WithId<Dotfile>>
-
+	let tree: PathTree<Dotfile>
+	let readme: Dotfile | undefined
 	let currentos: OS
 	onMount(() => {
 		const q = new URLSearchParams(window.location.search)
@@ -24,9 +28,9 @@
 		}
 		if (currentos != ("" as OS) && currentos != undefined) {
 			let paths = data.docs.map((v) => [v.paths[currentos], v])
-			console.log(paths)
 			tree = treeifyPaths(paths as PathContexts)
-			console.log(tree)
+
+			readme = getReadme(data.docs)
 		}
 	})
 </script>
@@ -37,6 +41,46 @@
 
 {#if currentos}
 	<div class="flex flex-col items-center">
-		<FileTree {tree} />
+		<div class="ml-[-4rem]">
+			<FileTree {tree} />
+		</div>
+
+		<div class="mkd mt-10 w-80 border p-4 rounded-md">
+			{#if readme}
+				readme.md
+				<hr />
+				<SvelteMarkdown source={readme.content} />
+			{/if}
+		</div>
 	</div>
 {/if}
+
+<style>
+	.mkd :global(h1) {
+		font-size: 16pt;
+	}
+	.mkd :global(strong) {
+		font: bold;
+	}
+	.mkd :global(em) {
+		font-style: italic;
+	}
+	.mkd :global(a) {
+		text-decoration: underline;
+	}
+	.mkd :global(a):hover {
+		color: #93c5fd;
+	}
+	.mkd :global(li) {
+		display: list-item;
+		margin-left: 15px;
+	}
+	.mkd :global(ul) {
+		list-style: initial;
+	}
+	.mkd :global(ol) {
+		list-style-type: decimal;
+		list-style-position: outside;
+	}
+	/* TODO: finish adding markdown... */
+</style>

@@ -28,6 +28,7 @@
 	"type": "module",
 	"dependencies": {
 		"mongodb": "^5.8.0",
+		"svelte-markdown": "^0.3.0",
 		"treeify-paths": "^2.0.1"
 	}
 }

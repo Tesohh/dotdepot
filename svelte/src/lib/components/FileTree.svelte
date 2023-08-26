@@ -4,26 +4,30 @@
 	import { onMount } from "svelte"
 	import type { PathTree } from "treeify-paths"
 
-	export let tree: PathTree<WithId<Dotfile>>
+	export let tree: PathTree<Dotfile>
 </script>
 
-<ul>
-	{#each tree.children as child}
-		<li>
-			{#if child.children}
-				{#if child.name == ""}
-					📁 {child.path.split("/").at(-1)}
-				{:else}
-					<a href={child.ctx.safeID}>📄 {child.name}</a>
+{#if tree}
+	<ul>
+		{#each tree.children as child}
+			<li>
+				{#if child.children}
+					{#if child.name == ""}
+						📁 {child.path.split("/").at(-1)}
+					{:else}
+						<a class="hover:text-blue-300" href={child.ctx.safeID ?? ""}>📄 {child.name}</a>
+					{/if}
+					<br />
+					{#if child.name == ""}
+						<svelte:self tree={child} />
+					{/if}
 				{/if}
-				<br />
-				{#if child.name == ""}
-					<svelte:self tree={child} />
-				{/if}
-			{/if}
-		</li>
-	{/each}
-</ul>
+			</li>
+		{/each}
+	</ul>
+{:else}
+	hmmm... it seems there are no files here.
+{/if}
 
 <style>
 	ul {
