@@ -8,6 +8,7 @@
 	import { treeifyPaths, type PathTree, type PathContexts } from "treeify-paths"
 	import FileTree from "$lib/components/FileTree.svelte"
 	import SvelteMarkdown from "svelte-markdown"
+	import renderers from "$lib/mdrenderers"
 
 	function getReadme(p: Dotfile[]) {
 		return p.find((v) => v.paths[currentos] == "~/.config/dotdepot/readme.md")
@@ -32,6 +33,7 @@
 
 			readme = getReadme(data.docs)
 		}
+		console.log(renderers)
 	})
 </script>
 
@@ -50,11 +52,49 @@
 				readme.md
 				<hr />
 				<div class="mkd">
-					<SvelteMarkdown source={readme.content} />
+					<SvelteMarkdown source={readme.content} {renderers} />
 				</div>
 			{/if}
 		</div>
 	</div>
 {/if}
 
-<link rel="stylesheet" href="markdown.css" />
+<style>
+	.mkd {
+		font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+			Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+		font-size: 8pt;
+		line-height: 10pt;
+	}
+	.mkd :global(h1) {
+		font-size: 16pt;
+		line-height: 20pt;
+	}
+	.mkd :global(strong) {
+		font: bold;
+	}
+	.mkd :global(em) {
+		font-style: italic;
+	}
+	.mkd :global(a) {
+		text-decoration: underline;
+	}
+	.mkd :global(a):hover {
+		color: #93c5fd;
+	}
+	.mkd :global(li) {
+		display: list-item;
+		margin-left: 15px;
+	}
+	.mkd :global(ul) {
+		list-style: initial;
+	}
+	.mkd :global(ol) {
+		list-style-type: decimal;
+		list-style-position: inside;
+		margin-left: -15px;
+	}
+	.mkd :global(code) {
+		font-size: 8pt;
+	}
+</style>
