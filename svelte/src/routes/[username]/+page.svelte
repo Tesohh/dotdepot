@@ -62,15 +62,15 @@
 	}
 	.mkd :global(h1) {
 		font-size: 16pt;
-		line-height: 20pt;
+		line-height: 26pt;
 	}
 	.mkd :global(h2) {
 		font-size: 14pt;
-		line-height: 18pt;
+		line-height: 24pt;
 	}
 	.mkd :global(h3) {
 		font-size: 12pt;
-		line-height: 14pt;
+		line-height: 20pt;
 	}
 	.mkd :global(strong) {
 		font: bold;
