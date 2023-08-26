@@ -6,6 +6,7 @@ Dotdepot is a simple utility, written in Go, to manage your dotfiles across mult
 
 It's easy to share a config with someone.
 The link format to share a config is `dotdepot.pyros.dev/<username>`
+
 So if you want to share your config, or add it to your link tree or something similar, here you go
 
 ## Can't i just use git?
