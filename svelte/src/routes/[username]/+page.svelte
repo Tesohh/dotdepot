@@ -45,42 +45,16 @@
 			<FileTree {tree} />
 		</div>
 
-		<div class="mkd mt-10 w-80 border p-4 rounded-md">
+		<div class=" mt-10 w-80 border p-4 rounded-md">
 			{#if readme}
 				readme.md
 				<hr />
-				<SvelteMarkdown source={readme.content} />
+				<div class="mkd">
+					<SvelteMarkdown source={readme.content} />
+				</div>
 			{/if}
 		</div>
 	</div>
 {/if}
 
-<style>
-	.mkd :global(h1) {
-		font-size: 16pt;
-	}
-	.mkd :global(strong) {
-		font: bold;
-	}
-	.mkd :global(em) {
-		font-style: italic;
-	}
-	.mkd :global(a) {
-		text-decoration: underline;
-	}
-	.mkd :global(a):hover {
-		color: #93c5fd;
-	}
-	.mkd :global(li) {
-		display: list-item;
-		margin-left: 15px;
-	}
-	.mkd :global(ul) {
-		list-style: initial;
-	}
-	.mkd :global(ol) {
-		list-style-type: decimal;
-		list-style-position: outside;
-	}
-	/* TODO: finish adding markdown... */
-</style>
+<link rel="stylesheet" href="markdown.css" />
