@@ -57,7 +57,7 @@ func (s CRUDStore[T]) Put(doc T) error {
 	if err != nil {
 		return err
 	}
-	_, err = http.Post(s.ep("put", nil), "text/json", bytes.NewReader(jdoc))
+	_, err = http.Post(s.ep("put", nil), "application/json", bytes.NewReader(jdoc))
 	return err
 }
 

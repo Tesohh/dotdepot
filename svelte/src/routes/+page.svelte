@@ -1,12 +1,15 @@
 <script lang="ts">
 	import Navbar from "$lib/components/Navbar.svelte"
 	import renderers from "$lib/mdrenderers"
+	import { onMount } from "svelte"
 	import SvelteMarkdown from "svelte-markdown"
 
 	let readme: string
-	fetch("https://raw.githubusercontent.com/Tesohh/dotdepot/main/README.md")
-		.then((res) => res.text())
-		.then((res) => (readme = res))
+	onMount(() =>
+		fetch("https://raw.githubusercontent.com/Tesohh/dotdepot/main/README.md")
+			.then((res) => res.text())
+			.then((res) => (readme = res))
+	)
 </script>
 
 <Navbar depotname={""}>
