@@ -10,6 +10,8 @@ const handler: Handler = async (event: HandlerEvent, context: HandlerContext) =>
 	const db = (await client).db("main")
 	const dfColl = db.collection(event.queryStringParameters?.collection ?? "")
 
+	console.log(event.body)
+
 	return {
 		statusCode: 200,
 		body: JSON.stringify(await dfColl.findOne(JSON.parse(event.body || "")))

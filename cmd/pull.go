@@ -44,10 +44,6 @@ func getFilesFromDirs(dfStore db.Storer[db.Dotfile], cfg config.Config, creds au
 }
 
 func Pull(userStore db.Storer[auth.User], dfStore db.Storer[db.Dotfile], creds auth.Credentials) error {
-	err := auth.VerifyReadOnly(userStore, creds)
-	if err != nil {
-		return err
-	}
 	color.New(color.FgYellow, color.Italic).Println("⚠️  dotdepot is not responsible for files downloaded to your machines.")
 
 	// first of all we need the new config:

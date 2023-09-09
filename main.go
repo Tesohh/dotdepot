@@ -14,6 +14,16 @@ import (
 	_ "github.com/joho/godotenv/autoload"
 )
 
+var endpoint = func() string {
+	postfix := "/.netlify/functions"
+	envPrefix := os.Getenv("endpointprefix")
+	if envPrefix != "" {
+		return envPrefix + postfix
+	}
+
+	return "https://dotdepot.pyros.dev" + postfix
+}()
+
 func main() {
 	client, err := db.NewMongoClient()
 	if err != nil { // the universe collapses if we dont have the client
@@ -23,9 +33,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-	dfStore := db.MongoStore[db.Dotfile]{Client: client, Coll: client.Database("main").Collection("files")}
-	userStore := db.MongoStore[auth.User]{Client: client, Coll: client.Database("main").Collection("users")}
-
 	cfg, err := config.Read[config.Config]("config.yml")
 	if err != nil {
 		log.Fatal(config.ErrNoConfigFile)
@@ -34,6 +41,8 @@ func main() {
 	if err != nil {
 		log.Fatal(auth.ErrNoLoginFile)
 	}
+	dfStore := db.CRUDStore[db.Dotfile]{Endpoint: endpoint, Collection: "files", Username: creds.Username, Password: creds.Password}
+	userStore := db.CRUDStore[auth.User]{Endpoint: endpoint, Collection: "users", Username: creds.Username, Password: creds.Password}
 
 	color.New(color.Bold).Println("📦 dotdepot")
 	if len(os.Args) < 2 {
