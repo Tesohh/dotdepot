@@ -3,6 +3,7 @@ package db
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"strings"
 )
@@ -37,9 +38,20 @@ func (s CRUDStore[T]) Get(q Query) (*T, error) {
 	if err != nil {
 		return nil, err
 	}
+	req.Header.Add("Accept", "*/*")
+	req.Header.Add("Content-Type", "application/json")
+
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return nil, err
+	}
+
+	defer res.Body.Close()
+	body, _ := io.ReadAll(res.Body)
+
+	fmt.Printf("%+v\nbody: %v\n", res, string(body))
+	if string(body) == "null" {
+		fmt.Println("NULL!??!?!?!?")
 	}
 
 	var document T
