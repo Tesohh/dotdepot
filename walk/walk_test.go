@@ -33,7 +33,7 @@ func TestWalk(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := Walk(tt.args.basedir)
+			got, err := Walk(tt.args.basedir, false)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Walk() error = %v, wantErr %v", err, tt.wantErr)
 				return
