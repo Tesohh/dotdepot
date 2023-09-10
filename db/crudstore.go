@@ -8,6 +8,19 @@ import (
 	"strings"
 )
 
+func handleHTTPError(res *http.Response) error {
+	if res.StatusCode != 200 {
+		body, err := io.ReadAll(res.Body)
+		if err != nil {
+			return err
+		}
+		defer res.Body.Close()
+		return fmt.Errorf("[error %v] %v", res.StatusCode, string(body))
+	}
+
+	return nil
+}
+
 type CRUDStore[T IsEmptyer] struct {
 	Endpoint   string
 	Collection string
@@ -45,13 +58,9 @@ func (s CRUDStore[T]) Get(q Query) (*T, error) {
 	if err != nil {
 		return nil, err
 	}
-
-	defer res.Body.Close()
-	body, _ := io.ReadAll(res.Body)
-
-	fmt.Printf("%+v\nbody: %v\n", res, string(body))
-	if string(body) == "null" {
-		fmt.Println("NULL!??!?!?!?")
+	err = handleHTTPError(res)
+	if err != nil {
+		return nil, err
 	}
 
 	var document T
@@ -68,7 +77,14 @@ func (s CRUDStore[T]) GetMany(q Query) ([]T, error) {
 	if err != nil {
 		return nil, err
 	}
+	req.Header.Add("Accept", "*/*")
+	req.Header.Add("Content-Type", "application/json")
+
 	res, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	err = handleHTTPError(res)
 	if err != nil {
 		return nil, err
 	}
@@ -78,13 +94,22 @@ func (s CRUDStore[T]) GetMany(q Query) ([]T, error) {
 }
 
 func (s CRUDStore[T]) Put(doc T) error {
-	panic("Not implemented")
-	// jdoc, err := json.Marshal(doc)
-	// if err != nil {
-	// 	return err
-	// }
-	// _, err = http.Post(s.ep("put", nil), "application/json", bytes.NewReader(jdoc))
-	// return err
+	jdoc, err := json.Marshal(doc)
+	if err != nil {
+		return err
+	}
+	req, err := http.NewRequest(http.MethodPost, s.ep("put", nil), strings.NewReader(string(jdoc)))
+	if err != nil {
+		return err
+	}
+	req.Header.Add("Accept", "*/*")
+	req.Header.Add("Content-Type", "application/json")
+	res, err := http.DefaultClient.Do(req)
+	err = handleHTTPError(res)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s CRUDStore[T]) Update(q Query, newValue T) error {

@@ -3,6 +3,7 @@ import { MongoClient } from "mongodb"
 import bcrypt from "bcrypt"
 
 import dotenv from "dotenv"
+import sortKeysRecursive from "sort-keys-recursive"
 dotenv.config()
 
 const client = MongoClient.connect(process.env.DB_CONN_STRING ?? "")
@@ -23,7 +24,12 @@ const handler: Handler = async (event: HandlerEvent, context: HandlerContext) =>
 	if (!bcrypt.compareSync(password, user.password ?? ""))
 		return { statusCode: 401, body: "wrong password" }
 
-	const res = await dfColl.insertOne(JSON.parse(event.body))
+	const jquery = JSON.parse(event.body || "") as object
+	const sorted = sortKeysRecursive(jquery)
+
+	const res = await dfColl.insertOne(sorted)
+	console.log(res.acknowledged)
+	console.log(event.body)
 
 	return {
 		statusCode: 200,

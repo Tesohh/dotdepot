@@ -30,8 +30,10 @@
 	"dependencies": {
 		"@netlify/functions": "^2.0.2",
 		"@sveltejs/adapter-netlify": "^2.0.8",
+		"bcrypt": "^5.1.1",
 		"dotenv": "^16.3.1",
 		"mongodb": "^5.8.0",
+		"sort-keys-recursive": "^2.1.9",
 		"svelte-markdown": "^0.3.0",
 		"treeify-paths": "^2.0.1"
 	}

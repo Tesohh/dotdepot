@@ -13,14 +13,6 @@ import (
 )
 
 func Push(userStore db.Storer[auth.User], dfStore db.Storer[db.Dotfile], cfg config.Config, creds auth.Credentials) error {
-	err := auth.VerifyReadOnly(userStore, creds)
-	if err != nil {
-		return err
-	}
-	err = auth.VerifyWrite(userStore, creds)
-	if err != nil {
-		return err
-	}
 	color.New(color.FgYellow, color.Italic).Println("⚠️  dotdepot is not responsible for files uploaded to the service.")
 
 	filesIgnored := 0
@@ -86,9 +78,15 @@ func Push(userStore db.Storer[auth.User], dfStore db.Storer[db.Dotfile], cfg con
 		query := db.Query{"paths": paths.ToQuery(), "username": creds.Username}
 		_, err = dfStore.Get(query)
 		if err != nil { // this means we must create the document
-			dfStore.Put(df)
+			err = dfStore.Put(df)
+			if err != nil {
+				return err
+			}
 		} else { // the document already exists
-			dfStore.Update(query, df)
+			err = dfStore.Update(query, df)
+			if err != nil {
+				return err
+			}
 		}
 
 		fmt.Printf("✅ pushed %v\n", path)
