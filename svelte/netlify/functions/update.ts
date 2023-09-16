@@ -27,7 +27,7 @@ const handler: Handler = async (event: HandlerEvent, context: HandlerContext) =>
 	if (user == null) return { statusCode: 404, body: "user not found" }
 	if (!bcrypt.compareSync(password, user.password ?? ""))
 		return { statusCode: 401, body: "wrong password" }
-
+	console.log(body.query, body.doc, body)
 	const res = await dfColl.findOneAndUpdate(body.query, { $set: body.doc })
 
 	return {

@@ -105,6 +105,9 @@ func (s CRUDStore[T]) Put(doc T) error {
 	req.Header.Add("Accept", "*/*")
 	req.Header.Add("Content-Type", "application/json")
 	res, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return err
+	}
 	err = handleHTTPError(res)
 	if err != nil {
 		return err
@@ -113,7 +116,29 @@ func (s CRUDStore[T]) Put(doc T) error {
 }
 
 func (s CRUDStore[T]) Update(q Query, newValue T) error {
-	panic("Not implemented!")
+	jbody, err := json.Marshal(Query{
+		"query": q,
+		"doc":   newValue,
+	})
+	if err != nil {
+		return err
+	}
+
+	req, err := http.NewRequest(http.MethodPatch, s.ep("update", nil), strings.NewReader(string(jbody)))
+	if err != nil {
+		return err
+	}
+	req.Header.Add("Accept", "*/*")
+	req.Header.Add("Content-Type", "application/json")
+	res, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return err
+	}
+	err = handleHTTPError(res)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s CRUDStore[T]) Delete(q Query) error {
