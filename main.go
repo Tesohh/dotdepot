@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"log"
 	"os"
@@ -25,14 +24,6 @@ var endpoint = func() string {
 }()
 
 func main() {
-	client, err := db.NewMongoClient()
-	if err != nil { // the universe collapses if we dont have the client
-		log.Fatal(err)
-	}
-	if err := client.Ping(context.Background(), nil); err != nil {
-		log.Fatal(err)
-	}
-
 	cfg, err := config.Read[config.Config]("config.yml")
 	if err != nil {
 		log.Fatal(config.ErrNoConfigFile)
