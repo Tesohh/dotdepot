@@ -16,7 +16,7 @@
 					{#if child.name == ""}
 						📁 {child.path.split("/").at(-1)}
 					{:else}
-						<a class="hover:text-blue-300" href="/{depotname}/{child.ctx.safeID ?? ''}"
+						<a class="hover:text-blue-300" href="/@{depotname}/{child.ctx.safeID ?? ''}"
 							>📄 {child.name}</a
 						>
 					{/if}
